@@ -10,7 +10,7 @@ return [
      */
     'file' => [
         'path' => base_path(),
-        'name' => '.env.example'
+        'name' => '.env'
     ],
 
     /**

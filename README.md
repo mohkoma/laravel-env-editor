@@ -1,7 +1,7 @@
 ## About This package
 This package allows you to edit your .env file directly in your project.
 The idea to built it was after we moved our project from Forge to AWS and we wanted to keep the same experience that Forge provide when you edit the environment file.
-I treid also to keep the same Forge styles and behaviour (Because Forge is 💪).
+I tried also to keep the same Forge styles and behaviour (Because Forge is 💪).
 
 ![Env editor](screenshot.png)
 

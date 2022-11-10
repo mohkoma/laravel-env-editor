@@ -14,7 +14,7 @@ class EnvEditorServiceProvider extends ServiceProvider
         // Config
         $this->publishes([
             __DIR__.'/config/env_editor.php' => config_path('env_editor.php'),
-        ]);
+        ], 'env-editor-config');
 
         // Default config
         $this->mergeConfigFrom(
@@ -30,12 +30,12 @@ class EnvEditorServiceProvider extends ServiceProvider
         // Publish
         $this->publishes([
             __DIR__.'/resources/views' => resource_path('views/vendor/env-editor'),
-        ]);
+        ], 'env-editor-views');
 
         // Assets
         $this->publishes([
             __DIR__.'/public' => public_path('vendor/env-editor'),
-        ], 'public');
+        ], 'env-editor-assets');
     }
 
     /**

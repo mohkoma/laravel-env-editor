@@ -6,12 +6,19 @@
 return [
 
     /**
+     *  The default env file
+     */
+    'file' => [
+        'path' => base_path(),
+        'name' => '.env.example'
+    ],
+
+    /**
      *  The middlewares for the env's routes
      */
     'middlewares' => [
         //\Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class
     ],
-
 
     /**
      *  Choose custom routes (Keep the same keys, Just change the value)

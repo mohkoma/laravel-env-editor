@@ -11,6 +11,10 @@ I treid also to keep the same Forge styles and behaviour (Because Forge is 💪)
 Then you need to publish the assets
 `php artisan vendor:publish --tag=env-editor-assets`
 
+## Requires
+PHP >= 7.4
+Laravel >= 7.0
+
 ## Usage
 After you install the package you should be ready to go, The default route to access the editor is `/dev/environment` but you could also change from the config file.
 To publish the config file, just run:

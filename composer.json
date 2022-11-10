@@ -1,6 +1,8 @@
 {
     "name": "mohkoma/laravel-env-editor",
     "type": "project",
+    "keywords": ["laravel", "env", "dotenv", "forge", "editor"],
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "Mohkoma\\LaravelEnvEditor\\": "src/"

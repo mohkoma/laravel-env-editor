@@ -40,6 +40,11 @@ function fetchEnv() {
     .then((response) => {
         if(!response.data.env) return;
         renderEditor(response.data.env);
+    }).catch((error) => {
+        if(error.response.status == 419) {
+            location.reload();
+        }
+        showError(error.response.data.message);
     }).finally((response) => {
         hideSpinner();
     });

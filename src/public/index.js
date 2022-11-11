@@ -36,15 +36,13 @@ function fetchEnv() {
     // Mark as loading
     showSpinner();
     // Call server
-    setTimeout(() => {
-        axios.get('/dev/environment/fetch')
-        .then((response) => {
-            if(!response.data.env) return;
-            renderEditor(response.data.env);
-        }).finally((response) => {
-            hideSpinner();
-        });
-    }, 1500);
+    axios.get('/dev/environment/fetch')
+    .then((response) => {
+        if(!response.data.env) return;
+        renderEditor(response.data.env);
+    }).finally((response) => {
+        hideSpinner();
+    });
 }
 
 /**
@@ -93,22 +91,20 @@ function save() {
     // Clear error
     clearError();
     // Call server
-    setTimeout(() => {
-        axios.post('/dev/environment/save', { env: editor.getValue() })
-        .then((response) => {
-            if(!response.data.env) return;
+    axios.post('/dev/environment/save', { env: editor.getValue() })
+    .then((response) => {
+        if(!response.data.env) return;
+        location.reload();
+    }).catch((error) => {
+        if(error.response.status == 419) {
             location.reload();
-        }).catch((error) => {
-            if(error.response.status == 419) {
-                location.reload();
-            }
-            showError(error.response.data.message);
-            hideSpinner();
-        })
-        .finally((response) => {
-           //
-        });
-    }, 1500);
+        }
+        showError(error.response.data.message);
+        hideSpinner();
+    })
+    .finally((response) => {
+        //
+    });
 }
 
 /**

@@ -3,18 +3,14 @@
 namespace Mohkoma\LaravelEnvEditor;
 
 use Dotenv\Dotenv;
+use Illuminate\Support\Facades\Storage;
 
 final class EnvEditor
 {
     /**
-     * @var \Dotenv\Dotenv
+     * @var \Illuminate\Contracts\Filesystem\Filesystem
      */
-    private $env;
-
-    /**
-     * @var string
-     */
-    private $filename;
+    private $disk;
 
     /**
      * @var string
@@ -22,34 +18,26 @@ final class EnvEditor
     private $path;
 
     /**
-     * Construct
-     *
-     * @param string $filename
-     * @param string $path
+     * @var string
      */
-    public function __construct(string $filename = '.env', string $path = null)
-    {
-        $this->filename = $filename;
-        $this->path = $path ?? base_path();
-        $this->env = Dotenv::createMutable($this->path, $this->filename);
-    }
+    private $env;
 
     /**
-     * Access a private properity in dotenv class
+     * Construct
      *
-     * @param string $property
-     * @return mixed
+     * @param string $disk
+     * @param string $path
      */
-    private function getProperty($property)
+    public function __construct(string $disk = null, string $path = null)
     {
-        // Need a reflaction
-        $reflection = new \ReflectionObject($this->env);
-        // Handle the property
-        $property = $reflection->getProperty($property);
-        // Set as accessable
-        $property->setAccessible(true);
-        // Get the store value
-        return $property->getValue($this->env);
+        // Define the disk
+        $this->disk = $disk
+            ? Storage::disk($disk)
+            : Storage::build(['driver' => 'local', 'root' => base_path()]);
+        // Define the file path
+        $this->path = $path ?? '.env';
+        // Get the file content
+        $this->env = $this->disk->get($this->path);
     }
 
     /**
@@ -59,10 +47,7 @@ final class EnvEditor
      */
     public function getContent(): string
     {
-        // Get the store property
-        $store = $this->getProperty('store');
-        // Read the store
-        return $store->read();
+        return $this->env;
     }
 
     /**
@@ -72,16 +57,8 @@ final class EnvEditor
      */
     public function setContent(string $content): self
     {
-        // Define file path
-        $path = $this->path.'/'.$this->filename;
-        // Confirm file existence
-        if (!file_exists($path)) {
-            throw new \RuntimeException('.env file does not exist');
-        }
-        // Store the change
-        file_put_contents($path, $content);
-        // Refresh the current env
-        $this->refresh();
+        // Set the file content
+        $this->disk->put($this->path, $content);
         // Return back the new instance
         return $this;
     }
@@ -93,7 +70,7 @@ final class EnvEditor
      */
     public function refresh(): void
     {
-        $this->env = Dotenv::createMutable($this->path, $this->filename);
+        $this->env = $this->disk->get($this->path);
     }
 
     /**

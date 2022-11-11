@@ -9,8 +9,8 @@ return [
      *  The default env file
      */
     'file' => [
-        'path' => base_path(),
-        'name' => '.env'
+        'disk' => null,
+        'path' => '.env',
     ],
 
     /**

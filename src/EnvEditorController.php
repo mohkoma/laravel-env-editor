@@ -27,12 +27,10 @@ class EnvEditorController extends Controller
      */
     public function fetch(): Response
     {
-        // Get the default file
-        $file = config('env_editor.file');
         // Get the store value
         $env = new EnvEditor(
-            $file['name'] ?? null, 
-            $file['path'] ?? null
+            config('env_editor.file.disk'),
+            config('env_editor.file.path')
         );
         // Rteurn response
         return response([
@@ -53,10 +51,13 @@ class EnvEditorController extends Controller
         $request->validate(['env' => $rules]);
         // Validate the giving content
         EnvEditor::validate($request->env);
-        // Get the default file
-        $file = config('env_editor.file');
-        // Set the env content
-        $env = (new EnvEditor($file['name'] ?? null, $file['path'] ?? null))->setContent($request->env);
+        // Set the env instance
+        $env = new EnvEditor(
+            config('env_editor.file.disk'),
+            config('env_editor.file.path')
+        );
+        // Write it up
+        $env->setContent($request->env);
         // Return response
         return response([
             'env' => $env->getContent(),
